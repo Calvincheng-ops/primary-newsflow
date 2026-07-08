@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>一级信息流 · 每日实时权威信息</title>
+  <meta name="description" content="仅聚合世界一级(权威原始发布机构)信息源：政府、央行、监管、国际组织、顶级学刊、通讯社官方发布。" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <div class="brand">
+        <span class="logo">📡</span>
+        <div>
+          <h1>一级信息流</h1>
+          <p class="tag">只收录世界一级权威机构的原始发布 · 按机构权威度 + 时效排序</p>
+        </div>
+      </div>
+      <div class="meta">
+        <span id="updated" class="updated">加载中…</span>
+        <button id="refresh" class="btn" title="重新加载数据">↻ 刷新</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs wrap" id="tabs"></nav>
+
+  <div class="wrap toolbar">
+    <input id="search" type="search" placeholder="搜索标题 / 机构 / 关键词…" />
+    <div class="filters">
+      <label class="chk"><input type="checkbox" class="tierbox" value="1" checked /> 顶级机构</label>
+      <label class="chk"><input type="checkbox" class="tierbox" value="2" checked /> 通讯社</label>
+      <label class="chk"><input type="checkbox" class="tierbox" value="3" checked /> 头部机构</label>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <div id="stats" class="stats"></div>
+    <ul id="feed" class="feed"></ul>
+    <div id="empty" class="empty" hidden>没有匹配的信息。</div>
+  </main>
+
+  <section class="wrap sources-nav">
+    <h2>常用一级源导航（直达官网）</h2>
+    <p class="hint">按领域分组的原始权威机构主页，可直接点开查看。</p>
+    <div id="sourceNav" class="source-nav"></div>
+  </section>
+
+  <footer class="wrap foot">
+    <p id="footnote"></p>
+    <p class="disclaimer">数据来源于各机构公开 RSS/Atom。本页仅做聚合与排序，版权归原机构所有，点击标题跳转原始发布页。</p>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
