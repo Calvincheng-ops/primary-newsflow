@@ -94,3 +94,16 @@ test("large feeds render incrementally and expose per-section source health", as
   assert.match(html, /id="loadMoreBtn"/);
   assert.match(html, /id="sourceHealth"/);
 });
+
+
+test("curl fallback decompresses feeds and blocked FDA source is replaced by the official CDC API", async () => {
+  const build = await readFile(new URL("../build.mjs", import.meta.url), "utf8");
+  assert.match(build, /"--compressed"/);
+  assert.doesNotMatch(build, /stay-informed\/rss-feeds\/press-releases/);
+
+  const cdc = registry.sources.find((source) => source.id === "cdc");
+  assert.ok(cdc, "official CDC source should be configured");
+  assert.equal(cdc.type, "json");
+  assert.equal(cdc.parser, "cdc-media");
+  assert.equal(new URL(cdc.url).hostname, "tools.cdc.gov");
+});

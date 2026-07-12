@@ -51,6 +51,7 @@ async function curlFetchText(url, { timeout = FETCH_TIMEOUT_MS, accept = "*/*" }
     [
       "--fail",
       "--location",
+      "--compressed",
       "--silent",
       "--show-error",
       "--max-time",
@@ -176,6 +177,27 @@ function toNewsItem(raw, src, tierWeight) {
   };
 }
 
+function parseCdcMedia(body, src, tierWeight) {
+  const payload = JSON.parse(body);
+  if (!Array.isArray(payload?.results)) throw new Error("Invalid CDC media API response");
+
+  return payload.results
+    .filter((entry) => entry?.name && (entry.targetUrl || entry.sourceUrl))
+    .slice(0, MAX_ITEMS_PER_SOURCE)
+    .map((entry) =>
+      toNewsItem(
+        {
+          title: entry.name,
+          link: entry.targetUrl || entry.sourceUrl,
+          date: entry.datePublished || entry.dateContentUpdated || entry.dateModified,
+          summary: entry.description || entry.subTitle || "",
+        },
+        src,
+        tierWeight,
+      ),
+    );
+}
+
 function parseAnthropicNews(html, src, tierWeight) {
   const items = [];
   const seen = new Set();
@@ -219,13 +241,17 @@ async function processSource(src, tiers) {
         accept:
           src.type === "html"
             ? "text/html,application/xhtml+xml"
-            : "application/rss+xml,application/atom+xml,application/xml,text/xml,*/*",
+            : src.type === "json"
+              ? "application/json,*/*"
+              : "application/rss+xml,application/atom+xml,application/xml,text/xml,*/*",
       });
       const tierWeight = tiers[String(src.tier)]?.weight ?? 50;
       let items;
 
       if (src.parser === "anthropic-news") {
         items = parseAnthropicNews(body, src, tierWeight);
+      } else if (src.parser === "cdc-media") {
+        items = parseCdcMedia(body, src, tierWeight);
       } else {
         // rss-parser keeps mutable XML parser state. A parser per feed avoids
         // cross-feed corruption while sources are processed concurrently.

@@ -417,16 +417,18 @@
       "section": "world"
     },
     {
-      "id": "fda",
-      "name": "美国食药监局",
-      "nameEn": "US FDA",
-      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "home": "https://www.fda.gov/news-events",
+      "id": "cdc",
+      "name": "美国疾控中心",
+      "nameEn": "US CDC",
+      "url": "https://tools.cdc.gov/api/v2/resources/media?max=40&sort=-datePublished&sourceacronym=CDC",
+      "home": "https://www.cdc.gov/",
       "category": "health",
       "tier": 1,
       "region": "美国",
       "lang": "en",
-      "section": "world"
+      "section": "world",
+      "type": "json",
+      "parser": "cdc-media"
     },
     {
       "id": "whitehouse",
