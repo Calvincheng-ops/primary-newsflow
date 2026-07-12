@@ -3,55 +3,70 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>一级信息流 · 每日实时权威信息</title>
-  <meta name="description" content="仅聚合世界一级(权威原始发布机构)信息源：政府、央行、监管、国际组织、顶级学刊、通讯社官方发布。" />
+  <title>一级信息流 · 全球权威实时信息</title>
+  <meta name="description" content="AI情报 / 中国要闻 / 全球一级权威信息流 / 实时导航 — 聚合全球与中国 AI、时事和社会新闻；外文标题提供中文短译，点击直达原文。" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>" />
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <header class="top">
-    <div class="wrap">
-      <div class="brand">
-        <span class="logo">📡</span>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-brand">
+        <span class="sb-logo">📡</span>
         <div>
-          <h1>一级信息流</h1>
-          <p class="tag">只收录世界一级权威机构的原始发布 · 按机构权威度 + 时效排序</p>
+          <div class="sb-title">一级信息流</div>
+          <div class="sb-subtitle">Primary Newsflow</div>
         </div>
       </div>
-      <div class="meta">
-        <span id="updated" class="updated">加载中…</span>
-        <button id="refresh" class="btn" title="重新加载数据">↻ 刷新</button>
+      <nav class="sb-nav" id="sbNav"></nav>
+      <div class="sb-footer">
+        <span id="sbUpdated">加载中…</span>
       </div>
-    </div>
-  </header>
+    </aside>
 
-  <nav class="tabs wrap" id="tabs"></nav>
+    <!-- Main content -->
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" title="菜单">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="topbar-info">
+          <h2 class="section-title" id="sectionTitle">AI 情报</h2>
+          <p class="section-desc" id="sectionDesc"></p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn-icon" id="refreshBtn" title="刷新数据">↻</button>
+        </div>
+      </header>
 
-  <div class="wrap toolbar">
-    <input id="search" type="search" placeholder="搜索标题 / 机构 / 关键词…" />
-    <div class="filters">
-      <label class="chk"><input type="checkbox" class="tierbox" value="1" checked /> 顶级机构</label>
-      <label class="chk"><input type="checkbox" class="tierbox" value="2" checked /> 通讯社</label>
-      <label class="chk"><input type="checkbox" class="tierbox" value="3" checked /> 头部机构</label>
-    </div>
+      <div class="content-area">
+
+        <!-- Stats bar -->
+        <div class="stats-bar" id="statsBar"></div>
+
+        <!-- Toolbar (for non-nav sections) -->
+        <div class="toolbar" id="toolbar">
+          <input id="searchInput" type="search" placeholder="搜索标题 / 机构 / 关键词…" />
+          <div class="filter-chips" id="filterChips"></div>
+        </div>
+
+        <!-- Feed -->
+        <div class="feed-container" id="feedContainer"></div>
+
+        <!-- Nav grid (for nav section) -->
+        <div class="nav-grid" id="navGrid"></div>
+
+        <!-- Empty state -->
+        <div class="empty-state" id="emptyState" hidden>
+          <div class="empty-icon">📭</div>
+          <p>没有匹配的信息</p>
+        </div>
+
+      </div>
+    </main>
   </div>
-
-  <main class="wrap">
-    <div id="stats" class="stats"></div>
-    <ul id="feed" class="feed"></ul>
-    <div id="empty" class="empty" hidden>没有匹配的信息。</div>
-  </main>
-
-  <section class="wrap sources-nav">
-    <h2>常用一级源导航（直达官网）</h2>
-    <p class="hint">按领域分组的原始权威机构主页，可直接点开查看。</p>
-    <div id="sourceNav" class="source-nav"></div>
-  </section>
-
-  <footer class="wrap foot">
-    <p id="footnote"></p>
-    <p class="disclaimer">数据来源于各机构公开 RSS/Atom。本页仅做聚合与排序，版权归原机构所有，点击标题跳转原始发布页。</p>
-  </footer>
 
   <script src="./app.js"></script>
 </body>

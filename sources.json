@@ -1,10 +1,22 @@
 {
   "meta": {
-    "note": "仅收录『一级信息源』：由原始权威机构直接发布(政府/央行/监管/国际组织/顶级学刊/通讯社/头部机构官方newsroom)。不收录热榜、二次转载、聚合评论类来源。",
+    "note": "一级信息流：聚合全球与中国 AI、时事和社会新闻；外文标题提供机器短译，点击始终前往原文。",
     "tiers": {
-      "1": { "label": "顶级权威机构", "weight": 100, "desc": "国际组织、央行、监管、政府官方、顶级学刊" },
-      "2": { "label": "权威通讯社/公共媒体", "weight": 70, "desc": "国家级通讯社与公共广播机构的原始报道" },
-      "3": { "label": "头部机构官方", "weight": 55, "desc": "头部科技/行业机构官方发布" }
+      "1": {
+        "label": "顶级权威机构",
+        "weight": 100,
+        "desc": "国际组织、央行、监管、政府官方、顶级学刊"
+      },
+      "2": {
+        "label": "权威通讯社/公共媒体",
+        "weight": 70,
+        "desc": "国家级通讯社与公共广播机构的原始报道"
+      },
+      "3": {
+        "label": "头部机构官方",
+        "weight": 55,
+        "desc": "头部科技/行业机构官方发布"
+      }
     }
   },
   "categories": {
@@ -14,52 +26,965 @@
     "tech": "科技",
     "science": "科学研究",
     "health": "卫生健康",
-    "energy": "能源气候"
+    "energy": "能源气候",
+    "ai": "人工智能",
+    "china-pol": "中国政经",
+    "china-soc": "中国社会"
+  },
+  "sections": {
+    "ai": {
+      "label": "AI 情报",
+      "icon": "🤖",
+      "desc": "全球与中国 AI 领域最新动态 — 顶级实验室、学术突破、产业政策"
+    },
+    "china": {
+      "label": "中国要闻",
+      "icon": "🇨🇳",
+      "desc": "发生在中国的重点新闻 — 政经、社会、科技，精选权威报道"
+    },
+    "world": {
+      "label": "全球一级流",
+      "icon": "📡",
+      "desc": "世界一级权威机构原始发布 — 政府/央行/监管/顶刊/通讯社"
+    },
+    "nav": {
+      "label": "实时导航",
+      "icon": "🧭",
+      "desc": "可直接访问的实时信息流与新闻网站精选目录"
+    }
   },
   "sources": [
-    { "id": "un-news", "name": "联合国新闻", "nameEn": "UN News", "url": "https://news.un.org/feed/subscribe/en/news/all/rss.xml", "home": "https://news.un.org", "category": "world", "tier": 1, "region": "国际", "lang": "en" },
-    { "id": "who", "name": "世界卫生组织", "nameEn": "WHO", "url": "https://www.who.int/rss-feeds/news-english.xml", "home": "https://www.who.int/news", "category": "health", "tier": 1, "region": "国际", "lang": "en" },
-    { "id": "iaea", "name": "国际原子能机构", "nameEn": "IAEA", "url": "https://www.iaea.org/feeds/topnews", "home": "https://www.iaea.org/news", "category": "energy", "tier": 1, "region": "国际", "lang": "en" },
-    { "id": "wto", "name": "世界贸易组织", "nameEn": "WTO", "url": "https://www.wto.org/library/rss/latest_news_e.xml", "home": "https://www.wto.org", "category": "econ", "tier": 1, "region": "国际", "lang": "en" },
-    { "id": "unpress", "name": "联合国新闻发布", "nameEn": "UN Press", "url": "https://press.un.org/en/rss.xml", "home": "https://press.un.org/en", "category": "world", "tier": 1, "region": "国际", "lang": "en" },
-
-    { "id": "fed", "name": "美联储", "nameEn": "US Federal Reserve", "url": "https://www.federalreserve.gov/feeds/press_all.xml", "home": "https://www.federalreserve.gov/newsevents.htm", "category": "econ", "tier": 1, "region": "美国", "lang": "en" },
-    { "id": "ecb", "name": "欧洲央行", "nameEn": "ECB", "url": "https://www.ecb.europa.eu/rss/press.html", "home": "https://www.ecb.europa.eu/press/html/index.en.html", "category": "econ", "tier": 1, "region": "欧盟", "lang": "en" },
-    { "id": "boe", "name": "英格兰银行", "nameEn": "Bank of England", "url": "https://www.bankofengland.co.uk/rss/news", "home": "https://www.bankofengland.co.uk/news", "category": "econ", "tier": 1, "region": "英国", "lang": "en" },
-    { "id": "eia", "name": "美国能源信息署", "nameEn": "US EIA", "url": "https://www.eia.gov/rss/todayinenergy.xml", "home": "https://www.eia.gov/todayinenergy", "category": "energy", "tier": 1, "region": "美国", "lang": "en" },
-
-    { "id": "sec", "name": "美国证监会", "nameEn": "US SEC", "url": "https://www.sec.gov/news/pressreleases.rss", "home": "https://www.sec.gov/news/pressreleases", "category": "reg", "tier": 1, "region": "美国", "lang": "en" },
-    { "id": "fda", "name": "美国食药监局", "nameEn": "US FDA", "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml", "home": "https://www.fda.gov/news-events", "category": "health", "tier": 1, "region": "美国", "lang": "en" },
-    { "id": "doj", "name": "美国司法部", "nameEn": "US DOJ", "url": "https://www.justice.gov/feeds/opa/justice-news.xml", "home": "https://www.justice.gov/news", "category": "reg", "tier": 1, "region": "美国", "lang": "en" },
-
-    { "id": "whitehouse", "name": "美国白宫", "nameEn": "The White House", "url": "https://www.whitehouse.gov/news/feed/", "home": "https://www.whitehouse.gov/news", "category": "world", "tier": 1, "region": "美国", "lang": "en" },
-    { "id": "state", "name": "美国国务院", "nameEn": "US State Dept", "url": "https://www.state.gov/rss-feed/press-releases/feed/", "home": "https://www.state.gov/press-releases", "category": "world", "tier": 1, "region": "美国", "lang": "en" },
-    { "id": "ukgov", "name": "英国政府", "nameEn": "UK Government", "url": "https://www.gov.uk/search/news-and-communications.atom", "home": "https://www.gov.uk/government/news", "category": "world", "tier": 1, "region": "英国", "lang": "en" },
-    { "id": "ec", "name": "欧盟委员会", "nameEn": "European Commission", "url": "https://ec.europa.eu/commission/presscorner/api/rss?language=en", "home": "https://ec.europa.eu/commission/presscorner", "category": "world", "tier": 1, "region": "欧盟", "lang": "en" },
-
-    { "id": "nature", "name": "《自然》", "nameEn": "Nature", "url": "https://www.nature.com/nature.rss", "home": "https://www.nature.com", "category": "science", "tier": 1, "region": "国际", "lang": "en" },
-    { "id": "science", "name": "《科学》(AAAS)", "nameEn": "Science / AAAS", "url": "https://www.science.org/rss/news_current.xml", "home": "https://www.science.org/news", "category": "science", "tier": 1, "region": "国际", "lang": "en" },
-    { "id": "nasa", "name": "美国航天局", "nameEn": "NASA", "url": "https://www.nasa.gov/news-release/feed/", "home": "https://www.nasa.gov/news", "category": "science", "tier": 1, "region": "美国", "lang": "en" },
-    { "id": "usgs-quake", "name": "美国地质调查局(重大地震)", "nameEn": "USGS Significant Quakes", "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.atom", "home": "https://earthquake.usgs.gov", "category": "science", "tier": 1, "region": "国际", "lang": "en" },
-    { "id": "nejm", "name": "《新英格兰医学杂志》", "nameEn": "NEJM", "url": "https://www.nejm.org/action/showFeed?jc=nejm&type=etoc&feed=rss", "home": "https://www.nejm.org", "category": "health", "tier": 1, "region": "国际", "lang": "en" },
-    { "id": "arxiv-ai", "name": "arXiv 人工智能", "nameEn": "arXiv cs.AI", "url": "http://export.arxiv.org/rss/cs.AI", "home": "https://arxiv.org/list/cs.AI/recent", "category": "science", "tier": 2, "region": "国际", "lang": "en" },
-
-    { "id": "bbc-world", "name": "BBC 国际", "nameEn": "BBC World", "url": "https://feeds.bbci.co.uk/news/world/rss.xml", "home": "https://www.bbc.com/news/world", "category": "world", "tier": 2, "region": "英国", "lang": "en" },
-    { "id": "bbc-biz", "name": "BBC 商业", "nameEn": "BBC Business", "url": "https://feeds.bbci.co.uk/news/business/rss.xml", "home": "https://www.bbc.com/news/business", "category": "econ", "tier": 2, "region": "英国", "lang": "en" },
-    { "id": "bbc-sci", "name": "BBC 科学环境", "nameEn": "BBC Science", "url": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml", "home": "https://www.bbc.com/news/science_and_environment", "category": "science", "tier": 2, "region": "英国", "lang": "en" },
-    { "id": "bbc-tech", "name": "BBC 科技", "nameEn": "BBC Technology", "url": "https://feeds.bbci.co.uk/news/technology/rss.xml", "home": "https://www.bbc.com/news/technology", "category": "tech", "tier": 2, "region": "英国", "lang": "en" },
-    { "id": "aljazeera", "name": "半岛电视台", "nameEn": "Al Jazeera", "url": "https://www.aljazeera.com/xml/rss/all.xml", "home": "https://www.aljazeera.com", "category": "world", "tier": 2, "region": "卡塔尔", "lang": "en" },
-    { "id": "npr", "name": "美国国家公共电台", "nameEn": "NPR", "url": "https://feeds.npr.org/1001/rss.xml", "home": "https://www.npr.org", "category": "world", "tier": 2, "region": "美国", "lang": "en" },
-    { "id": "dw", "name": "德国之声", "nameEn": "Deutsche Welle", "url": "https://rss.dw.com/rdf/rss-en-world", "home": "https://www.dw.com", "category": "world", "tier": 2, "region": "德国", "lang": "en" },
-    { "id": "france24", "name": "法国24", "nameEn": "France 24", "url": "https://www.france24.com/en/rss", "home": "https://www.france24.com/en", "category": "world", "tier": 2, "region": "法国", "lang": "en" },
-    { "id": "cbc", "name": "加拿大广播公司", "nameEn": "CBC", "url": "https://www.cbc.ca/webfeed/rss/rss-world", "home": "https://www.cbc.ca/news/world", "category": "world", "tier": 2, "region": "加拿大", "lang": "en" },
-
-    { "id": "openai", "name": "OpenAI", "nameEn": "OpenAI", "url": "https://openai.com/news/rss.xml", "home": "https://openai.com/news", "category": "tech", "tier": 3, "region": "美国", "lang": "en" },
-    { "id": "googleblog", "name": "Google 官方博客", "nameEn": "Google Keyword", "url": "https://blog.google/rss/", "home": "https://blog.google", "category": "tech", "tier": 3, "region": "美国", "lang": "en" },
-    { "id": "msft", "name": "微软官方博客", "nameEn": "Microsoft", "url": "https://blogs.microsoft.com/feed/", "home": "https://blogs.microsoft.com", "category": "tech", "tier": 3, "region": "美国", "lang": "en" },
-    { "id": "apple", "name": "Apple Newsroom", "nameEn": "Apple Newsroom", "url": "https://www.apple.com/newsroom/rss-feed.rss", "home": "https://www.apple.com/newsroom", "category": "tech", "tier": 3, "region": "美国", "lang": "en" },
-    { "id": "nvidia", "name": "英伟达官方博客", "nameEn": "NVIDIA Blog", "url": "https://blogs.nvidia.com/feed/", "home": "https://blogs.nvidia.com", "category": "tech", "tier": 3, "region": "美国", "lang": "en" },
-    { "id": "aws", "name": "AWS 官方博客", "nameEn": "AWS News", "url": "https://aws.amazon.com/blogs/aws/feed/", "home": "https://aws.amazon.com/blogs/aws", "category": "tech", "tier": 3, "region": "美国", "lang": "en" },
-    { "id": "githubblog", "name": "GitHub 官方博客", "nameEn": "GitHub Blog", "url": "https://github.blog/feed/", "home": "https://github.blog", "category": "tech", "tier": 3, "region": "美国", "lang": "en" }
+    {
+      "id": "mit-tr",
+      "name": "MIT科技评论",
+      "nameEn": "MIT Tech Review",
+      "url": "https://www.technologyreview.com/feed/",
+      "home": "https://www.technologyreview.com",
+      "category": "ai",
+      "tier": 2,
+      "region": "美国",
+      "lang": "en",
+      "section": "ai",
+      "includeKeywords": [
+        "ai",
+        "artificial intelligence",
+        "machine learning",
+        "llm",
+        "large language model",
+        "robot",
+        "openai",
+        "anthropic",
+        "claude",
+        "gemini",
+        "chatgpt",
+        "deepmind",
+        "nvidia",
+        "agent",
+        "robotics",
+        "robots",
+        "agents"
+      ],
+      "filterFields": [
+        "title"
+      ]
+    },
+    {
+      "id": "tc",
+      "name": "TechCrunch",
+      "nameEn": "TechCrunch",
+      "url": "https://techcrunch.com/feed/",
+      "home": "https://techcrunch.com",
+      "category": "ai",
+      "tier": 2,
+      "region": "美国",
+      "lang": "en",
+      "section": "ai",
+      "includeKeywords": [
+        "ai",
+        "artificial intelligence",
+        "machine learning",
+        "llm",
+        "large language model",
+        "robot",
+        "openai",
+        "anthropic",
+        "claude",
+        "gemini",
+        "chatgpt",
+        "deepmind",
+        "nvidia",
+        "agent",
+        "robotics",
+        "robots",
+        "agents"
+      ],
+      "filterFields": [
+        "title"
+      ]
+    },
+    {
+      "id": "verge",
+      "name": "The Verge",
+      "nameEn": "The Verge",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "home": "https://www.theverge.com",
+      "category": "ai",
+      "tier": 2,
+      "region": "美国",
+      "lang": "en",
+      "section": "ai",
+      "includeKeywords": [
+        "ai",
+        "artificial intelligence",
+        "machine learning",
+        "llm",
+        "large language model",
+        "robot",
+        "openai",
+        "anthropic",
+        "claude",
+        "gemini",
+        "chatgpt",
+        "deepmind",
+        "nvidia",
+        "agent",
+        "robotics",
+        "robots",
+        "agents"
+      ],
+      "filterFields": [
+        "title"
+      ]
+    },
+    {
+      "id": "vb-ai",
+      "name": "VentureBeat AI",
+      "nameEn": "VentureBeat AI",
+      "url": "https://venturebeat.com/category/ai/feed/",
+      "home": "https://venturebeat.com/category/ai",
+      "category": "ai",
+      "tier": 2,
+      "region": "美国",
+      "lang": "en",
+      "section": "ai"
+    },
+    {
+      "id": "anthropic",
+      "name": "Anthropic",
+      "nameEn": "Anthropic Blog",
+      "url": "https://www.anthropic.com/news",
+      "home": "https://www.anthropic.com/news",
+      "category": "ai",
+      "tier": 3,
+      "region": "美国",
+      "lang": "en",
+      "section": "ai",
+      "type": "html",
+      "parser": "anthropic-news"
+    },
+    {
+      "id": "deepmind",
+      "name": "DeepMind",
+      "nameEn": "Google DeepMind",
+      "url": "https://deepmind.google/blog/rss.xml",
+      "home": "https://deepmind.google/blog",
+      "category": "ai",
+      "tier": 3,
+      "region": "英国",
+      "lang": "en",
+      "section": "ai"
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI",
+      "nameEn": "OpenAI",
+      "url": "https://openai.com/news/rss.xml",
+      "home": "https://openai.com/news",
+      "category": "ai",
+      "tier": 3,
+      "region": "美国",
+      "lang": "en",
+      "section": "ai"
+    },
+    {
+      "id": "arxiv-ai",
+      "name": "arXiv AI 新论文",
+      "nameEn": "arXiv cs.AI",
+      "url": "http://export.arxiv.org/rss/cs.AI",
+      "home": "https://arxiv.org/list/cs.AI/recent",
+      "category": "ai",
+      "tier": 2,
+      "region": "国际",
+      "lang": "en",
+      "section": "ai"
+    },
+    {
+      "id": "qbitai",
+      "name": "量子位",
+      "nameEn": "QbitAI",
+      "url": "https://www.qbitai.com/feed",
+      "home": "https://www.qbitai.com",
+      "category": "ai",
+      "tier": 2,
+      "region": "中国",
+      "lang": "zh",
+      "section": "ai"
+    },
+    {
+      "id": "36kr-ai",
+      "name": "36氪",
+      "nameEn": "36Kr",
+      "url": "https://36kr.com/feed",
+      "home": "https://36kr.com",
+      "category": "ai",
+      "tier": 2,
+      "region": "中国",
+      "lang": "zh",
+      "section": "ai",
+      "includeKeywords": [
+        "人工智能",
+        "ai",
+        "大模型",
+        "模型",
+        "机器人",
+        "智能体",
+        "算法",
+        "芯片",
+        "openai",
+        "英伟达",
+        "谷歌",
+        "claude",
+        "chatgpt"
+      ],
+      "filterFields": [
+        "title"
+      ]
+    },
+    {
+      "id": "scmp",
+      "name": "南华早报",
+      "nameEn": "SCMP",
+      "url": "https://www.scmp.com/rss/4/feed",
+      "home": "https://www.scmp.com",
+      "category": "china-pol",
+      "tier": 2,
+      "region": "香港",
+      "lang": "en",
+      "section": "china"
+    },
+    {
+      "id": "cgtn",
+      "name": "CGTN",
+      "nameEn": "CGTN",
+      "url": "https://www.cgtn.com/subscribe/rss/section/world.xml",
+      "home": "https://www.cgtn.com",
+      "category": "china-pol",
+      "tier": 2,
+      "region": "中国",
+      "lang": "en",
+      "section": "china"
+    },
+    {
+      "id": "sixthtone",
+      "name": "第六声",
+      "nameEn": "Sixth Tone",
+      "url": "https://www.sixthtone.com/rss",
+      "home": "https://www.sixthtone.com",
+      "category": "china-soc",
+      "tier": 2,
+      "region": "中国",
+      "lang": "en",
+      "section": "china"
+    },
+    {
+      "id": "un-news",
+      "name": "联合国新闻",
+      "nameEn": "UN News",
+      "url": "https://news.un.org/feed/subscribe/en/news/all/rss.xml",
+      "home": "https://news.un.org",
+      "category": "world",
+      "tier": 1,
+      "region": "国际",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "who",
+      "name": "世界卫生组织",
+      "nameEn": "WHO",
+      "url": "https://www.who.int/rss-feeds/news-english.xml",
+      "home": "https://www.who.int/news",
+      "category": "health",
+      "tier": 1,
+      "region": "国际",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "iaea",
+      "name": "国际原子能机构",
+      "nameEn": "IAEA",
+      "url": "https://www.iaea.org/feeds/topnews",
+      "home": "https://www.iaea.org/news",
+      "category": "energy",
+      "tier": 1,
+      "region": "国际",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "wto",
+      "name": "世界贸易组织",
+      "nameEn": "WTO",
+      "url": "https://www.wto.org/library/rss/latest_news_e.xml",
+      "home": "https://www.wto.org",
+      "category": "econ",
+      "tier": 1,
+      "region": "国际",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "unpress",
+      "name": "联合国新闻发布",
+      "nameEn": "UN Press",
+      "url": "https://press.un.org/en/rss.xml",
+      "home": "https://press.un.org/en",
+      "category": "world",
+      "tier": 1,
+      "region": "国际",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "fed",
+      "name": "美联储",
+      "nameEn": "US Federal Reserve",
+      "url": "https://www.federalreserve.gov/feeds/press_all.xml",
+      "home": "https://www.federalreserve.gov/newsevents.htm",
+      "category": "econ",
+      "tier": 1,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "ecb",
+      "name": "欧洲央行",
+      "nameEn": "ECB",
+      "url": "https://www.ecb.europa.eu/rss/press.html",
+      "home": "https://www.ecb.europa.eu/press/html/index.en.html",
+      "category": "econ",
+      "tier": 1,
+      "region": "欧盟",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "boe",
+      "name": "英格兰银行",
+      "nameEn": "Bank of England",
+      "url": "https://www.bankofengland.co.uk/rss/news",
+      "home": "https://www.bankofengland.co.uk/news",
+      "category": "econ",
+      "tier": 1,
+      "region": "英国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "eia",
+      "name": "美国能源信息署",
+      "nameEn": "US EIA",
+      "url": "https://www.eia.gov/rss/todayinenergy.xml",
+      "home": "https://www.eia.gov/todayinenergy",
+      "category": "energy",
+      "tier": 1,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "sec",
+      "name": "美国证监会",
+      "nameEn": "US SEC",
+      "url": "https://www.sec.gov/news/pressreleases.rss",
+      "home": "https://www.sec.gov/news/pressreleases",
+      "category": "reg",
+      "tier": 1,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "fda",
+      "name": "美国食药监局",
+      "nameEn": "US FDA",
+      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
+      "home": "https://www.fda.gov/news-events",
+      "category": "health",
+      "tier": 1,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "whitehouse",
+      "name": "美国白宫",
+      "nameEn": "The White House",
+      "url": "https://www.whitehouse.gov/news/feed/",
+      "home": "https://www.whitehouse.gov/news",
+      "category": "world",
+      "tier": 1,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "state",
+      "name": "美国国务院",
+      "nameEn": "US State Dept",
+      "url": "https://www.state.gov/rss-feed/press-releases/feed/",
+      "home": "https://www.state.gov/press-releases",
+      "category": "world",
+      "tier": 1,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "ukgov",
+      "name": "英国政府",
+      "nameEn": "UK Government",
+      "url": "https://www.gov.uk/search/news-and-communications.atom",
+      "home": "https://www.gov.uk/government/news",
+      "category": "world",
+      "tier": 1,
+      "region": "英国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "ec",
+      "name": "欧盟委员会",
+      "nameEn": "European Commission",
+      "url": "https://ec.europa.eu/commission/presscorner/api/rss?language=en",
+      "home": "https://ec.europa.eu/commission/presscorner",
+      "category": "world",
+      "tier": 1,
+      "region": "欧盟",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "nature",
+      "name": "《自然》",
+      "nameEn": "Nature",
+      "url": "https://www.nature.com/nature.rss",
+      "home": "https://www.nature.com",
+      "category": "science",
+      "tier": 1,
+      "region": "国际",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "science",
+      "name": "《科学》",
+      "nameEn": "Science / AAAS",
+      "url": "https://www.science.org/rss/news_current.xml",
+      "home": "https://www.science.org/news",
+      "category": "science",
+      "tier": 1,
+      "region": "国际",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "nasa",
+      "name": "美国航天局",
+      "nameEn": "NASA",
+      "url": "https://www.nasa.gov/news-release/feed/",
+      "home": "https://www.nasa.gov/news",
+      "category": "science",
+      "tier": 1,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "usgs-quake",
+      "name": "USGS 重大地震",
+      "nameEn": "USGS Quakes",
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.atom",
+      "home": "https://earthquake.usgs.gov",
+      "category": "science",
+      "tier": 1,
+      "region": "国际",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "nejm",
+      "name": "新英格兰医学",
+      "nameEn": "NEJM",
+      "url": "https://www.nejm.org/action/showFeed?jc=nejm&type=etoc&feed=rss",
+      "home": "https://www.nejm.org",
+      "category": "health",
+      "tier": 1,
+      "region": "国际",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "bbc-world",
+      "name": "BBC 国际",
+      "nameEn": "BBC World",
+      "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "home": "https://www.bbc.com/news/world",
+      "category": "world",
+      "tier": 2,
+      "region": "英国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "bbc-biz",
+      "name": "BBC 商业",
+      "nameEn": "BBC Business",
+      "url": "https://feeds.bbci.co.uk/news/business/rss.xml",
+      "home": "https://www.bbc.com/news/business",
+      "category": "econ",
+      "tier": 2,
+      "region": "英国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "bbc-sci",
+      "name": "BBC 科学",
+      "nameEn": "BBC Science",
+      "url": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml",
+      "home": "https://www.bbc.com/news/science_and_environment",
+      "category": "science",
+      "tier": 2,
+      "region": "英国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "aljazeera",
+      "name": "半岛电视台",
+      "nameEn": "Al Jazeera",
+      "url": "https://www.aljazeera.com/xml/rss/all.xml",
+      "home": "https://www.aljazeera.com",
+      "category": "world",
+      "tier": 2,
+      "region": "卡塔尔",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "npr",
+      "name": "美国国家公共电台",
+      "nameEn": "NPR",
+      "url": "https://feeds.npr.org/1001/rss.xml",
+      "home": "https://www.npr.org",
+      "category": "world",
+      "tier": 2,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "dw",
+      "name": "德国之声",
+      "nameEn": "Deutsche Welle",
+      "url": "https://rss.dw.com/rdf/rss-en-world",
+      "home": "https://www.dw.com",
+      "category": "world",
+      "tier": 2,
+      "region": "德国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "france24",
+      "name": "法国24",
+      "nameEn": "France 24",
+      "url": "https://www.france24.com/en/rss",
+      "home": "https://www.france24.com/en",
+      "category": "world",
+      "tier": 2,
+      "region": "法国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "cbc",
+      "name": "加拿大广播公司",
+      "nameEn": "CBC",
+      "url": "https://www.cbc.ca/webfeed/rss/rss-world",
+      "home": "https://www.cbc.ca/news/world",
+      "category": "world",
+      "tier": 2,
+      "region": "加拿大",
+      "lang": "en",
+      "section": "world",
+      "timeoutMs": 30000
+    },
+    {
+      "id": "googleblog",
+      "name": "Google 博客",
+      "nameEn": "Google Blog",
+      "url": "https://blog.google/rss/",
+      "home": "https://blog.google",
+      "category": "tech",
+      "tier": 3,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "msft",
+      "name": "微软博客",
+      "nameEn": "Microsoft Blog",
+      "url": "https://blogs.microsoft.com/feed/",
+      "home": "https://blogs.microsoft.com",
+      "category": "tech",
+      "tier": 3,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "apple",
+      "name": "Apple Newsroom",
+      "nameEn": "Apple Newsroom",
+      "url": "https://www.apple.com/newsroom/rss-feed.rss",
+      "home": "https://www.apple.com/newsroom",
+      "category": "tech",
+      "tier": 3,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "nvidia",
+      "name": "英伟达博客",
+      "nameEn": "NVIDIA Blog",
+      "url": "https://blogs.nvidia.com/feed/",
+      "home": "https://blogs.nvidia.com",
+      "category": "tech",
+      "tier": 3,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "aws",
+      "name": "AWS 博客",
+      "nameEn": "AWS News Blog",
+      "url": "https://aws.amazon.com/blogs/aws/feed/",
+      "home": "https://aws.amazon.com/blogs/aws",
+      "category": "tech",
+      "tier": 3,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "githubblog",
+      "name": "GitHub 博客",
+      "nameEn": "GitHub Blog",
+      "url": "https://github.blog/feed/",
+      "home": "https://github.blog",
+      "category": "tech",
+      "tier": 3,
+      "region": "美国",
+      "lang": "en",
+      "section": "world"
+    },
+    {
+      "id": "meta-engineering",
+      "name": "Meta 工程",
+      "nameEn": "Meta Engineering",
+      "url": "https://engineering.fb.com/feed/",
+      "home": "https://engineering.fb.com/",
+      "category": "ai",
+      "tier": 3,
+      "region": "美国",
+      "lang": "en",
+      "section": "ai",
+      "includeKeywords": [
+        "ai",
+        "artificial intelligence",
+        "machine learning",
+        "llama",
+        "model",
+        "agent"
+      ]
+    },
+    {
+      "id": "chinanews-society",
+      "name": "中国新闻网·社会",
+      "nameEn": "China News Society",
+      "url": "https://www.chinanews.com.cn/rss/society.xml",
+      "home": "https://www.chinanews.com.cn/society/",
+      "category": "china-soc",
+      "tier": 2,
+      "region": "中国",
+      "lang": "zh",
+      "section": "china"
+    },
+    {
+      "id": "chinanews-china",
+      "name": "中国新闻网·国内",
+      "nameEn": "China News Service China",
+      "url": "https://www.chinanews.com.cn/rss/china.xml",
+      "home": "https://www.chinanews.com.cn/china/",
+      "category": "china-pol",
+      "tier": 1,
+      "region": "中国",
+      "lang": "zh",
+      "section": "china"
+    },
+    {
+      "id": "chinanews-finance",
+      "name": "中国新闻网·财经",
+      "nameEn": "China News Service Finance",
+      "url": "https://www.chinanews.com.cn/rss/finance.xml",
+      "home": "https://www.chinanews.com.cn/cj/",
+      "category": "china-pol",
+      "tier": 2,
+      "region": "中国",
+      "lang": "zh",
+      "section": "china"
+    },
+    {
+      "id": "chinanews-scroll",
+      "name": "中国新闻网·滚动",
+      "nameEn": "China News Service Latest",
+      "url": "https://www.chinanews.com.cn/rss/scroll-news.xml",
+      "home": "https://www.chinanews.com.cn/scroll-news/news1.html",
+      "category": "china-soc",
+      "tier": 2,
+      "region": "中国",
+      "lang": "zh",
+      "section": "china"
+    },
+    {
+      "id": "google-ai",
+      "name": "Google AI",
+      "nameEn": "Google AI",
+      "url": "https://blog.google/technology/ai/rss/",
+      "home": "https://blog.google/technology/ai/",
+      "category": "ai",
+      "tier": 3,
+      "region": "美国",
+      "lang": "en",
+      "section": "ai"
+    },
+    {
+      "id": "huggingface",
+      "name": "Hugging Face",
+      "nameEn": "Hugging Face Blog",
+      "url": "https://huggingface.co/blog/feed.xml",
+      "home": "https://huggingface.co/blog",
+      "category": "ai",
+      "tier": 3,
+      "region": "全球",
+      "lang": "en",
+      "section": "ai"
+    },
+    {
+      "id": "mit-ai",
+      "name": "MIT AI",
+      "nameEn": "MIT News AI",
+      "url": "https://news.mit.edu/rss/topic/artificial-intelligence2",
+      "home": "https://news.mit.edu/topic/artificial-intelligence2",
+      "category": "ai",
+      "tier": 2,
+      "region": "美国",
+      "lang": "en",
+      "section": "ai"
+    }
+  ],
+  "navLinks": [
+    {
+      "cat": "综合实时",
+      "items": [
+        {
+          "name": "Reuters Live",
+          "url": "https://www.reuters.com",
+          "desc": "路透社 — 全球实时新闻与金融市场数据"
+        },
+        {
+          "name": "Bloomberg",
+          "url": "https://www.bloomberg.com",
+          "desc": "彭博终端式实时财经新闻"
+        },
+        {
+          "name": "AP News",
+          "url": "https://apnews.com",
+          "desc": "美联社实时新闻"
+        },
+        {
+          "name": "BBC News Live",
+          "url": "https://www.bbc.com/news/live",
+          "desc": "BBC 实时滚动新闻"
+        },
+        {
+          "name": "Al Jazeera Live",
+          "url": "https://www.aljazeera.com/live",
+          "desc": "半岛电视台实时报道"
+        },
+        {
+          "name": "Google News",
+          "url": "https://news.google.com",
+          "desc": "Google News 全球头条聚合"
+        }
+      ]
+    },
+    {
+      "cat": "中国相关",
+      "items": [
+        {
+          "name": "新华网",
+          "url": "https://www.xinhuanet.com",
+          "desc": "新华社官方新闻门户"
+        },
+        {
+          "name": "央视新闻",
+          "url": "https://news.cctv.com",
+          "desc": "CCTV 新闻频道"
+        },
+        {
+          "name": "环球时报",
+          "url": "https://www.huanqiu.com",
+          "desc": "环球时报国际新闻"
+        },
+        {
+          "name": "联合早报",
+          "url": "https://www.zaobao.com",
+          "desc": "新加坡联合早报 — 中国新闻"
+        },
+        {
+          "name": "FT中文网",
+          "url": "https://www.ftchinese.com",
+          "desc": "金融时报中文版"
+        },
+        {
+          "name": "华尔街见闻",
+          "url": "https://wallstreetcn.com",
+          "desc": "实时财经资讯"
+        }
+      ]
+    },
+    {
+      "cat": "科技/AI",
+      "items": [
+        {
+          "name": "Hacker News",
+          "url": "https://news.ycombinator.com",
+          "desc": "YC 技术社区实时热帖"
+        },
+        {
+          "name": "Techmeme",
+          "url": "https://www.techmeme.com",
+          "desc": "科技头条自动聚合"
+        },
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com",
+          "desc": "科技与生活方式前沿报道"
+        },
+        {
+          "name": "Ars Technica",
+          "url": "https://arstechnica.com",
+          "desc": "深度科技报道与分析"
+        },
+        {
+          "name": "WIRED",
+          "url": "https://www.wired.com",
+          "desc": "科技文化杂志"
+        },
+        {
+          "name": "机器之心",
+          "url": "https://www.jiqizhixin.com",
+          "desc": "中国AI前沿媒体"
+        }
+      ]
+    },
+    {
+      "cat": "金融市场",
+      "items": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com",
+          "desc": "全球实时财经新闻"
+        },
+        {
+          "name": "MarketWatch",
+          "url": "https://www.marketwatch.com",
+          "desc": "美股市场实时数据与新闻"
+        },
+        {
+          "name": "Yahoo Finance",
+          "url": "https://finance.yahoo.com",
+          "desc": "综合金融信息与实时行情"
+        },
+        {
+          "name": "Investing.com",
+          "url": "https://www.investing.com",
+          "desc": "全球金融市场实时数据"
+        },
+        {
+          "name": "Trading Economics",
+          "url": "https://tradingeconomics.com",
+          "desc": "全球经济指标与数据"
+        },
+        {
+          "name": "金十数据",
+          "url": "https://www.jin10.com",
+          "desc": "中文实时财经快讯"
+        }
+      ]
+    },
+    {
+      "cat": "数据/监控",
+      "items": [
+        {
+          "name": "GDELT Project",
+          "url": "https://www.gdeltproject.org",
+          "desc": "全球事件数据库实时监控"
+        },
+        {
+          "name": "ACLED",
+          "url": "https://acleddata.com",
+          "desc": "武装冲突位置与事件数据"
+        },
+        {
+          "name": "Worldometer",
+          "url": "https://www.worldometers.info",
+          "desc": "世界实时统计数据"
+        },
+        {
+          "name": "FlightRadar24",
+          "url": "https://www.flightradar24.com",
+          "desc": "全球航班实时追踪"
+        },
+        {
+          "name": "MarineTraffic",
+          "url": "https://www.marinetraffic.com",
+          "desc": "全球船舶实时追踪"
+        },
+        {
+          "name": "Earthquake USGS",
+          "url": "https://earthquake.usgs.gov",
+          "desc": "全球地震实时监测"
+        }
+      ]
+    }
   ]
 }
