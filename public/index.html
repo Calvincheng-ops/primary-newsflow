@@ -3,72 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>一级信息流 · 全球权威实时信息</title>
-  <meta name="description" content="AI情报 / 中国要闻 / 全球一级权威信息流 / 实时导航 — 聚合全球与中国 AI、时事和社会新闻；外文标题提供中文短译，点击直达原文。" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>" />
+  <meta name="color-scheme" content="dark light" />
+  <title>一级信息流 · Primary Signal</title>
+  <meta name="description" content="AI 情报、中国要闻与全球一级信源的高密度实时信息终端。外文标题提供中文短译，点击直达原始发布机构。" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23070a0c'/><circle cx='50' cy='50' r='9' fill='%23c8ff3d'/><path d='M25 50a25 25 0 0 1 50 0M14 50a36 36 0 0 1 72 0' fill='none' stroke='%23c8ff3d' stroke-width='7' stroke-linecap='round'/></svg>" />
   <link rel="stylesheet" href="./style.css" />
 </head>
-<body>
+<body class="mode-console density-compact">
+  <a class="skip-link" href="#feedContainer">跳到信息流</a>
+  <div class="ambient-grid" aria-hidden="true"></div>
   <div class="app-shell">
-
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" aria-label="主导航">
       <div class="sb-brand">
-        <span class="sb-logo">📡</span>
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><b></b></span>
         <div>
+          <div class="sb-eyebrow">PRIMARY SIGNAL</div>
           <div class="sb-title">一级信息流</div>
-          <div class="sb-subtitle">Primary Newsflow</div>
         </div>
       </div>
+
+      <div class="sb-channel-label"><span>CHANNELS</span><kbd>1—4</kbd></div>
       <nav class="sb-nav" id="sbNav"></nav>
-      <div class="sb-footer">
-        <span id="sbUpdated">加载中…</span>
+
+      <div class="sb-system">
+        <div class="system-line"><span class="live-pulse"></span><strong>LIVE INGEST</strong></div>
+        <div class="system-time" id="sbUpdated">正在接入信号…</div>
+        <div class="system-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </div>
     </aside>
 
-    <!-- Main content -->
     <main class="main">
       <header class="topbar">
-        <button class="menu-toggle" id="menuToggle" title="菜单">
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="打开导航" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
         <div class="topbar-info">
-          <h2 class="section-title" id="sectionTitle">AI 情报</h2>
+          <div class="section-kicker"><span id="sectionCode">CH.01</span><i></i><span>INTELLIGENCE STREAM</span></div>
+          <h1 class="section-title" id="sectionTitle">AI 情报</h1>
           <p class="section-desc" id="sectionDesc"></p>
         </div>
         <div class="topbar-actions">
-          <button class="btn-icon" id="refreshBtn" title="刷新数据">↻</button>
+          <div class="view-switch" role="group" aria-label="信息展示模式">
+            <button id="viewConsoleBtn" class="view-btn active" type="button" data-mode="console" aria-pressed="true"><span>▤</span> 控制台</button>
+            <button id="viewEditorialBtn" class="view-btn" type="button" data-mode="editorial" aria-pressed="false"><span>◫</span> 简报</button>
+          </div>
+          <button class="utility-btn" id="densityBtn" type="button" aria-label="切换信息密度" title="切换信息密度"><span>密度</span><b id="densityLabel">紧凑</b></button>
+          <button class="refresh-btn" id="refreshBtn" type="button" aria-label="刷新数据" title="刷新数据"><span>↻</span></button>
         </div>
       </header>
 
+      <div class="signal-strip" aria-label="实时系统状态">
+        <div class="strip-live"><span></span> SIGNAL ONLINE</div>
+        <div id="globalStatus">正在连接权威信源网络</div>
+        <div class="strip-marquee"><span id="signalTicker">PRIMARY NEWSFLOW / VERIFIED SOURCES / DIRECT LINKS / BILINGUAL HEADLINES</span></div>
+        <div class="strip-clock" id="liveClock">--:--:-- CST</div>
+      </div>
+
       <div class="content-area">
+        <section class="stats-bar" id="statsBar" aria-label="板块统计"></section>
 
-        <!-- Stats bar -->
-        <div class="stats-bar" id="statsBar"></div>
+        <section class="command-deck" id="toolbar" aria-label="搜索与筛选">
+          <label class="search-box" for="searchInput">
+            <span class="search-icon">⌕</span>
+            <input id="searchInput" type="search" autocomplete="off" placeholder="搜索标题 / 机构 / 关键词…" />
+            <kbd>/</kbd>
+          </label>
+          <div class="filter-row">
+            <span class="filter-label">FILTER</span>
+            <div class="filter-chips" id="filterChips"></div>
+          </div>
+        </section>
 
-        <!-- Toolbar (for non-nav sections) -->
-        <div class="toolbar" id="toolbar">
-          <input id="searchInput" type="search" placeholder="搜索标题 / 机构 / 关键词…" />
-          <div class="filter-chips" id="filterChips"></div>
+        <div class="stream-head" id="streamHead">
+          <div><span class="stream-dot"></span><strong>实时信号</strong><small id="feedStatus" aria-live="polite"></small></div>
+          <div class="stream-legend"><span>优先级</span><b>T1</b><b>T2</b><b>T3</b></div>
         </div>
 
-        <!-- Feed -->
-        <div class="feed-status" id="feedStatus" aria-live="polite"></div>
         <div class="feed-container" id="feedContainer"></div>
-        <button class="load-more" id="loadMoreBtn" type="button" hidden>加载更多</button>
+        <button class="load-more" id="loadMoreBtn" type="button" hidden><span>载入下一批信号</span><b></b></button>
 
-        <!-- Per-section source health -->
         <details class="source-health" id="sourceHealth"></details>
-
-        <!-- Nav grid (for nav section) -->
         <div class="nav-grid" id="navGrid"></div>
 
-        <!-- Empty state -->
         <div class="empty-state" id="emptyState" hidden>
-          <div class="empty-icon">📭</div>
-          <p>没有匹配的信息</p>
+          <div class="empty-scan" aria-hidden="true"></div>
+          <strong>NO SIGNAL</strong>
+          <p>当前筛选条件下没有匹配的信息</p>
         </div>
-
       </div>
     </main>
   </div>

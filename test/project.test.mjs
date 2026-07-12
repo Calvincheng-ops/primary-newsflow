@@ -107,3 +107,24 @@ test("curl fallback decompresses feeds and blocked FDA source is replaced by the
   assert.equal(cdc.parser, "cdc-media");
   assert.equal(new URL(cdc.url).hostname, "tools.cdc.gov");
 });
+
+test("redesigned frontend exposes two persistent information views and density control", async () => {
+  const app = await readFile(new URL("../public/app.js", import.meta.url), "utf8");
+  const html = await readFile(new URL("../public/index.html", import.meta.url), "utf8");
+  const css = await readFile(new URL("../public/style.css", import.meta.url), "utf8");
+
+  assert.match(html, /id="viewConsoleBtn"/);
+  assert.match(html, /id="viewEditorialBtn"/);
+  assert.match(html, /id="densityBtn"/);
+  assert.match(app, /localStorage\.getItem\(STORAGE_KEY\)/);
+  assert.match(app, /localStorage\.setItem\(STORAGE_KEY/);
+  assert.match(css, /\.mode-editorial \.feed-container/);
+  assert.match(css, /\.density-comfortable \.news-card/);
+});
+
+test("news cards remain direct original links in the redesigned renderer", async () => {
+  const app = await readFile(new URL("../public/app.js", import.meta.url), "utf8");
+  assert.match(app, /href="\$\{safeUrl\(item\.link\)\}"/);
+  assert.match(app, /target="_blank"/);
+  assert.doesNotMatch(app, /translate\.google\.com/);
+});
