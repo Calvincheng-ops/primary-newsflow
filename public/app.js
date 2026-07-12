@@ -7,7 +7,10 @@ const state = {
   q: "",
   catFilter: "all",
   tiers: new Set([1, 2, 3]),
+  visibleCount: 60,
 };
+
+const PAGE_SIZE = 60;
 
 // ===== DOM refs =====
 const $ = (s) => document.querySelector(s);
@@ -26,6 +29,9 @@ const emptyState = $("#emptyState");
 const toolbar = $("#toolbar");
 const menuToggle = $("#menuToggle");
 const sidebar = $("#sidebar");
+const feedStatus = $("#feedStatus");
+const loadMoreBtn = $("#loadMoreBtn");
+const sourceHealth = $("#sourceHealth");
 
 // ===== Helpers =====
 function timeAgo(ts) {
@@ -84,6 +90,7 @@ function buildSidebar() {
       state.section = btn.dataset.section;
       state.q = "";
       state.catFilter = "all";
+      state.visibleCount = PAGE_SIZE;
       searchInput.value = "";
       switchSection();
     });
@@ -107,11 +114,16 @@ function switchSection() {
   navGrid.classList.toggle("active", isNav);
   emptyState.hidden = true;
 
+  feedStatus.hidden = isNav;
+  loadMoreBtn.hidden = true;
+  sourceHealth.hidden = isNav;
+
   if (isNav) {
     renderNavGrid();
   } else {
     buildFilterChips();
     renderFeed();
+    renderSourceHealth();
   }
   renderStats();
   updateSearchPlaceholder();
@@ -190,6 +202,7 @@ function buildFilterChips() {
   filterChips.querySelectorAll(".chip").forEach((chip) => {
     chip.addEventListener("click", () => {
       state.catFilter = chip.dataset.cat;
+      state.visibleCount = PAGE_SIZE;
       filterChips.querySelectorAll(".chip").forEach((c) => c.classList.toggle("active", c === chip));
       renderFeed();
     });
@@ -215,7 +228,14 @@ function renderFeed() {
 
   emptyState.hidden = filtered.length > 0;
 
-  feedContainer.innerHTML = filtered
+  const visible = filtered.slice(0, state.visibleCount);
+  feedStatus.textContent = filtered.length
+    ? `正在显示 ${visible.length} / ${filtered.length} 条`
+    : "没有匹配结果";
+  loadMoreBtn.hidden = visible.length >= filtered.length;
+  loadMoreBtn.textContent = `加载更多（剩余 ${Math.max(0, filtered.length - visible.length)} 条）`;
+
+  feedContainer.innerHTML = visible
     .map((it) => {
       const cat = categories[it.category] || it.category;
       const hasTranslation = Boolean(it.titleZh && it.titleZh !== it.title);
@@ -244,6 +264,36 @@ function renderFeed() {
     .join("");
 }
 
+
+// ===== Source Health =====
+function renderSourceHealth() {
+  const sectionSources = state.data.sources.filter((source) => source.section === state.section);
+  const online = sectionSources.filter((source) => source.ok).length;
+  const failed = sectionSources.length - online;
+
+  const tags = sectionSources
+    .map((source) => {
+      const stateClass = source.ok ? "" : " dead";
+      const count = Number.isFinite(source.count) ? `${source.count} 条` : "";
+      const detail = source.ok ? `${count || "在线"}` : `抓取失败：${source.error || "未知错误"}`;
+      return `<a class="src-tag${stateClass}" href="${safeUrl(source.home)}" target="_blank" rel="noopener" title="${esc(detail)}">
+        <span class="src-dot"></span>
+        <span>${esc(source.name)}</span>
+        <small>${esc(count)}</small>
+      </a>`;
+    })
+    .join("");
+
+  sourceHealth.innerHTML = `
+    <summary>
+      <span>信源状态</span>
+      <strong>${online}/${sectionSources.length} 在线</strong>
+      ${failed ? `<em>${failed} 个异常</em>` : ""}
+      <span class="source-health-hint">展开查看</span>
+    </summary>
+    <div class="src-grid">${tags}</div>`;
+}
+
 // ===== Nav Grid (实时导航) =====
 function renderNavGrid() {
   const navLinks = (state.data && state.data.navLinks) || [];
@@ -270,6 +320,12 @@ function renderNavGrid() {
 // ===== Search =====
 searchInput.addEventListener("input", (e) => {
   state.q = e.target.value;
+  state.visibleCount = PAGE_SIZE;
+  renderFeed();
+});
+
+loadMoreBtn.addEventListener("click", () => {
+  state.visibleCount += PAGE_SIZE;
   renderFeed();
 });
 
@@ -302,6 +358,7 @@ document.addEventListener("keydown", (e) => {
     state.section = sec;
     state.q = "";
     state.catFilter = "all";
+    state.visibleCount = PAGE_SIZE;
     searchInput.value = "";
     switchSection();
   }

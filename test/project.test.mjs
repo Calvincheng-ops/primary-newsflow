@@ -83,3 +83,14 @@ test("daily feed excludes stale or unexplained undated stories", () => {
   );
   assert.ok(chineseChinaItems.length >= 40, "China section should have substantial current Chinese-language coverage");
 });
+
+test("large feeds render incrementally and expose per-section source health", async () => {
+  const app = await readFile(new URL("../public/app.js", import.meta.url), "utf8");
+  const html = await readFile(new URL("../public/index.html", import.meta.url), "utf8");
+
+  assert.match(app, /const PAGE_SIZE = 60/);
+  assert.match(app, /filtered\.slice\(0, state\.visibleCount\)/);
+  assert.match(app, /function renderSourceHealth\(\)/);
+  assert.match(html, /id="loadMoreBtn"/);
+  assert.match(html, /id="sourceHealth"/);
+});
