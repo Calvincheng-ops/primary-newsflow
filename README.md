@@ -2,6 +2,8 @@
 
 一个面向日常阅读的实时信息流，聚合全球与中国的 **AI、时事、社会、科技、经济与公共事务新闻**。
 
+线上地址：<https://news.calvinsfweb.top>
+
 核心原则：
 
 - 外文新闻显示简短中文机器翻译，同时保留原文标题；
@@ -90,13 +92,26 @@ npm test
 
 ## 自动更新与部署
 
+当前生产站点部署在 Vercel：
+
+- Vercel 项目：`calvincheng-ops-projects/primary-newsflow`；
+- 构建命令：`npm run build`；
+- 静态输出目录：`public/`；
+- 自定义域名：`news.calvinsfweb.top`；
+- DNSPod 中仅需为 `news` 添加 CNAME：`5c4749b098123dbe.vercel-dns-017.com`；
+- 本地生产部署：`vercel --prod`。
+
+`vercel.json` 固化了 Vercel 的构建命令和输出目录。`.vercel/` 与本地环境变量文件已加入 Git 忽略列表。
+
+仓库中的 `.github/workflows/deploy.yml` 保留为 GitHub Pages 的旧部署流程；当前对外访问地址以 Vercel 为准。
+
 `.github/workflows/deploy.yml` 会：
 
 1. 每小时或在 `main` 分支推送时运行；
 2. 抓取信源；
 3. 生成外文标题中文短译；
 4. 验证数据健康；
-5. 部署 `public/` 到 GitHub Pages。
+5. 部署 `public/` 到 GitHub Pages（旧流程）。
 
 ## 主要文件
 
@@ -107,5 +122,7 @@ public/index.html             页面结构
 public/app.js                 信息流交互和双语展示
 public/style.css              页面样式
 serve.mjs                     本地静态服务器
-.github/workflows/deploy.yml  每小时构建与 GitHub Pages 部署
+vercel.json                   Vercel 构建命令与静态输出配置
+public/CNAME                  自定义域名声明
+.github/workflows/deploy.yml  旧的 GitHub Pages 定时部署流程
 ```
