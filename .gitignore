@@ -4,3 +4,5 @@ public/data.json
 *.log
 
 .cache/
+.vercel
+.env*
