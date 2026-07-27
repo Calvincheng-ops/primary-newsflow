@@ -1,27 +1,23 @@
-name: Build & Deploy Newsflow
+name: Build & Refresh Newsflow
 
 on:
   push:
     branches: [main]
   schedule:
-    - cron: "0 * * * *"   # 每小时抓取一次
+    - cron: "5 * * * *"   # 每小时抓取一次，避开整点拥堵
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: newsflow-refresh
   cancel-in-progress: true
 
 jobs:
-  build-deploy:
+  build-refresh:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -46,14 +42,15 @@ jobs:
       - name: Validate generated feed
         run: npm test
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
+      - name: Commit refreshed feed for Vercel
+        run: |
+          if git diff --quiet -- public/data.json; then
+            echo "No generated feed changes to publish."
+            exit 0
+          fi
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: public
-
-      - name: Deploy to GitHub Pages
-        id: deploy
-        uses: actions/deploy-pages@v4
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f public/data.json
+          git commit -m "chore: refresh news data [skip ci]"
+          git push

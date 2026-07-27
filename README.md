@@ -103,7 +103,7 @@ npm test
 
 `vercel.json` 固化了 Vercel 的构建命令和输出目录。`.vercel/` 与本地环境变量文件已加入 Git 忽略列表。
 
-仓库中的 `.github/workflows/deploy.yml` 保留为 GitHub Pages 的旧部署流程；当前对外访问地址以 Vercel 为准。
+仓库中的 `.github/workflows/deploy.yml` 每小时抓取并验证信息流，然后提交更新后的 `public/data.json`；Vercel 已连接 GitHub 仓库，会自动部署该提交。当前对外访问地址以 Vercel 为准。
 
 `.github/workflows/deploy.yml` 会：
 
@@ -111,7 +111,7 @@ npm test
 2. 抓取信源；
 3. 生成外文标题中文短译；
 4. 验证数据健康；
-5. 部署 `public/` 到 GitHub Pages（旧流程）。
+5. 将更新后的 `public/data.json` 提交回 `main`，触发 Vercel 自动部署。
 
 ## 主要文件
 
@@ -124,5 +124,5 @@ public/style.css              页面样式
 serve.mjs                     本地静态服务器
 vercel.json                   Vercel 构建命令与静态输出配置
 public/CNAME                  自定义域名声明
-.github/workflows/deploy.yml  旧的 GitHub Pages 定时部署流程
+.github/workflows/deploy.yml  每小时抓取、验证并提交最新数据
 ```

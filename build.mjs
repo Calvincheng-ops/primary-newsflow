@@ -321,18 +321,31 @@ async function translateToChinese(text) {
     dt: "t",
     q: text.slice(0, 600),
   });
-  const response = await fetchResponse(
-    `https://translate.googleapis.com/translate_a/single?${params}`,
-    { timeout: TRANSLATE_TIMEOUT_MS, accept: "application/json,text/plain,*/*" },
-  );
-  const payload = await response.json();
-  const translated = Array.isArray(payload?.[0])
-    ? payload[0].map((part) => part?.[0] || "").join("").trim()
-    : "";
-  if (!translated || normTitle(translated) === normTitle(text)) {
+  try {
+    const response = await fetchResponse(
+      `https://translate.googleapis.com/translate_a/single?${params}`,
+      { timeout: TRANSLATE_TIMEOUT_MS, accept: "application/json,text/plain,*/*" },
+    );
+    const payload = await response.json();
+    const translated = Array.isArray(payload?.[0])
+      ? payload[0].map((part) => part?.[0] || "").join("").trim()
+      : "";
+    if (translated && normTitle(translated) !== normTitle(text)) return translated;
+  } catch {
+    // Fall through to the secondary public translation endpoint.
+  }
+
+  const fallbackUrl = `https://lingva.ml/api/v1/auto/zh/${encodeURIComponent(text.slice(0, 600))}`;
+  const fallbackResponse = await fetchResponse(fallbackUrl, {
+    timeout: TRANSLATE_TIMEOUT_MS,
+    accept: "application/json,text/plain,*/*",
+  });
+  const fallbackPayload = await fallbackResponse.json();
+  const fallbackTranslation = String(fallbackPayload?.translation || "").trim();
+  if (!fallbackTranslation || normTitle(fallbackTranslation) === normTitle(text)) {
     throw new Error("empty translation");
   }
-  return translated;
+  return fallbackTranslation;
 }
 
 async function addChineseTranslations(itemsBySection) {
