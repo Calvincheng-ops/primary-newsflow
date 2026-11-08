@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import Parser from "rss-parser";
+import { htmlDecode, normTitle, seedTranslationCache, translateForeignHeadlines } from "./translate.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = __dirname;
@@ -13,12 +14,10 @@ const TRANSLATION_CACHE_PATH = join(CACHE_DIR, "translations.json");
 const execFileAsync = promisify(execFile);
 
 const FETCH_TIMEOUT_MS = 15000;
-const TRANSLATE_TIMEOUT_MS = 10000;
 const MAX_AGE_DAYS = 10;
 const MAX_ITEMS_PER_SOURCE = 25;
 const FETCH_CONCURRENCY = 8;
 const SOURCE_FETCH_ATTEMPTS = 2;
-const TRANSLATE_CONCURRENCY = 5;
 const MAX_TRANSLATIONS_PER_BUILD = Number(process.env.MAX_TRANSLATIONS_PER_BUILD || 800);
 const TRANSLATION_ENABLED = process.env.TRANSLATION_ENABLED !== "0";
 const MIN_SOURCE_SUCCESS_RATE = Number(process.env.MIN_SOURCE_SUCCESS_RATE || 0.65);
@@ -87,29 +86,6 @@ async function fetchText(url, options = {}) {
   } catch (curlError) {
     throw new Error(`${nativeError?.message || "fetch failed"}; curl fallback: ${curlError.message}`);
   }
-}
-
-function normTitle(value) {
-  return (value || "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .replace(/[^\p{L}\p{N} ]/gu, "")
-    .trim();
-}
-
-function containsChinese(value) {
-  return /[\u3400-\u9fff]/u.test(value || "");
-}
-
-function htmlDecode(value) {
-  return (value || "")
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
-    .replace(/&amp;/g, "&")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;|&apos;/g, "'")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">");
 }
 
 function stripTags(value) {
@@ -313,77 +289,24 @@ async function loadTranslationCache() {
   }
 }
 
-async function translateToChinese(text) {
-  const params = new URLSearchParams({
-    client: "gtx",
-    sl: "auto",
-    tl: "zh-CN",
-    dt: "t",
-    q: text.slice(0, 600),
-  });
+async function loadPreviousFeed() {
   try {
-    const response = await fetchResponse(
-      `https://translate.googleapis.com/translate_a/single?${params}`,
-      { timeout: TRANSLATE_TIMEOUT_MS, accept: "application/json,text/plain,*/*" },
-    );
-    const payload = await response.json();
-    const translated = Array.isArray(payload?.[0])
-      ? payload[0].map((part) => part?.[0] || "").join("").trim()
-      : "";
-    if (translated && normTitle(translated) !== normTitle(text)) return translated;
+    return JSON.parse(await readFile(join(OUT_DIR, "data.json"), "utf8"));
   } catch {
-    // Fall through to the secondary public translation endpoint.
+    return null;
   }
-
-  const fallbackUrl = `https://lingva.ml/api/v1/auto/zh/${encodeURIComponent(text.slice(0, 600))}`;
-  const fallbackResponse = await fetchResponse(fallbackUrl, {
-    timeout: TRANSLATE_TIMEOUT_MS,
-    accept: "application/json,text/plain,*/*",
-  });
-  const fallbackPayload = await fallbackResponse.json();
-  const fallbackTranslation = String(fallbackPayload?.translation || "").trim();
-  if (!fallbackTranslation || normTitle(fallbackTranslation) === normTitle(text)) {
-    throw new Error("empty translation");
-  }
-  return fallbackTranslation;
 }
 
 async function addChineseTranslations(itemsBySection) {
-  const stats = { enabled: TRANSLATION_ENABLED, candidates: 0, cached: 0, translated: 0, failed: 0 };
-  if (!TRANSLATION_ENABLED) return stats;
-
   const cache = await loadTranslationCache();
-  const candidates = Object.values(itemsBySection)
-    .flat()
-    .filter((item) => item.lang !== "zh" && !containsChinese(item.title))
-    .slice(0, MAX_TRANSLATIONS_PER_BUILD);
-  stats.candidates = candidates.length;
+  const seeded = seedTranslationCache(cache, await loadPreviousFeed());
+  if (seeded > 0) console.log(`Seeded ${seeded} cached translations from the previous feed`);
 
-  const pending = [];
-  for (const item of candidates) {
-    const cached = cache[item.title];
-    if (cached?.zh) {
-      item.titleZh = cached.zh;
-      stats.cached++;
-    } else {
-      pending.push(item);
-    }
-  }
-
-  await runPool(
-    pending,
-    async (item) => {
-      try {
-        const zh = await translateToChinese(item.title);
-        item.titleZh = zh;
-        cache[item.title] = { zh, updatedAt: new Date().toISOString() };
-        stats.translated++;
-      } catch {
-        stats.failed++;
-      }
-    },
-    TRANSLATE_CONCURRENCY,
-  );
+  const stats = await translateForeignHeadlines(Object.values(itemsBySection).flat(), {
+    cache,
+    enabled: TRANSLATION_ENABLED,
+    maxTranslations: MAX_TRANSLATIONS_PER_BUILD,
+  });
 
   const compactCache = Object.fromEntries(
     Object.entries(cache)
@@ -439,8 +362,13 @@ async function main() {
   console.log("Translating foreign headlines to concise Chinese...");
   const translation = await addChineseTranslations(itemsBySection);
   console.log(
-    `Translations: candidates=${translation.candidates} cached=${translation.cached} new=${translation.translated} failed=${translation.failed}`,
+    `Translations: candidates=${translation.candidates} cached=${translation.cached} new=${translation.translated} failed=${translation.failed} coverage=${translation.coverage} degraded=${translation.degraded} providers=${(translation.providersUsed || []).join("+") || "none"}`,
   );
+  if (translation.failureSummary) console.warn(`Translation provider warnings: ${translation.failureSummary}`);
+  if (translation.degraded) {
+    console.error(translation.message);
+    if (process.env.GITHUB_ACTIONS === "true") console.log(`::warning::${translation.message}`);
+  }
 
   const sourceStatus = results.map((result) => {
     const source = sources.find((candidate) => candidate.id === result.id);

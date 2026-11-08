@@ -36,7 +36,13 @@ jobs:
           restore-keys: |
             translations-${{ runner.os }}-
 
+      # Public translate endpoints are often rate-limited from GitHub-hosted
+      # runners. GOOGLE_TRANSLATE_API_KEY is optional; when it is set, Cloud
+      # Translation API v2 is tried first. A provider outage still publishes
+      # the feed and records translation.degraded instead of failing the job.
       - name: Fetch primary sources, translate headlines & build data
+        env:
+          GOOGLE_TRANSLATE_API_KEY: ${{ secrets.GOOGLE_TRANSLATE_API_KEY }}
         run: npm run build
 
       - name: Validate generated feed
