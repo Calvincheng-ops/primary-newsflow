@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { TRANSLATION_COVERAGE_TARGET } from "../translate.mjs";
 
 const registry = JSON.parse(await readFile(new URL("../sources.json", import.meta.url), "utf8"));
 const data = JSON.parse(await readFile(new URL("../public/data.json", import.meta.url), "utf8"));
@@ -30,13 +31,31 @@ test("foreign headlines receive Chinese short translations while preserving orig
     .slice(0, 300);
   const translated = foreign.filter((item) => item.titleZh);
   assert.ok(foreign.length > 0);
-  assert.ok(translated.length / foreign.length >= 0.9, "at least 90% of sampled foreign headlines should be translated");
   for (const item of translated) {
     assert.notEqual(item.titleZh, item.title);
+    assert.match(item.titleZh, /[\u3400-\u9fff]/u);
     const url = new URL(item.link);
     assert.ok(["http:", "https:"].includes(url.protocol));
     assert.notEqual(url.hostname, "translate.google.com", "cards must link to the original publisher");
   }
+
+  const translation = data.translation || {};
+  if (translation.enabled !== false) {
+    assert.equal(data.stats.translated, translation.cached + translation.translated);
+  }
+  if (translation.degraded) {
+    assert.ok(translation.failed > 0);
+    assert.ok(translation.coverage < TRANSLATION_COVERAGE_TARGET);
+    assert.match(translation.failureSummary || "", /\S/);
+    assert.match(translation.message || "", /GOOGLE_TRANSLATE_API_KEY/);
+    return;
+  }
+
+  const ratio = translated.length / foreign.length;
+  assert.ok(
+    ratio >= TRANSLATION_COVERAGE_TARGET,
+    `at least 90% of sampled foreign headlines should be translated (got ${translated.length}/${foreign.length}; ${translation.failureSummary || "no provider outage recorded"})`,
+  );
 });
 
 function keywordMatchesText(text, keyword) {
@@ -95,6 +114,19 @@ test("large feeds render incrementally and expose per-section source health", as
   assert.match(html, /id="sourceHealth"/);
 });
 
+
+test("scheduled refresh delegates translation and documents the optional API secret", async () => {
+  const build = await readFile(new URL("../build.mjs", import.meta.url), "utf8");
+  const workflow = await readFile(new URL("../.github/workflows/deploy.yml", import.meta.url), "utf8");
+  const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
+
+  assert.match(build, /translateForeignHeadlines/);
+  assert.match(build, /seedTranslationCache/);
+  assert.match(build, /translation\.degraded/);
+  assert.doesNotMatch(build, /translate\.googleapis\.com/);
+  assert.match(workflow, /GOOGLE_TRANSLATE_API_KEY:\s*\$\{\{\s*secrets\.GOOGLE_TRANSLATE_API_KEY\s*\}\}/);
+  assert.match(readme, /GOOGLE_TRANSLATE_API_KEY/);
+});
 
 test("curl fallback decompresses feeds and blocked FDA source is replaced by the official CDC API", async () => {
   const build = await readFile(new URL("../build.mjs", import.meta.url), "utf8");
